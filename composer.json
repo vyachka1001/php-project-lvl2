@@ -14,7 +14,8 @@
             "Hexlet\\Code\\": "src/"
         },
         "files": [
-            "src/differ/Generator.php"
+            "src/differ/Generator.php",
+            "src/dataDecoding/Decoder.php"
         ]
     },
     "authors": [
