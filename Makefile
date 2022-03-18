@@ -6,3 +6,6 @@ lint:
 
 validate:
 	composer validate
+
+update:
+	composer update
