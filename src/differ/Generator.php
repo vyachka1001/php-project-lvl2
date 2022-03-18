@@ -18,8 +18,7 @@ function readDataFromFile(string $filePath): string
     $file = fopen($filePath, 'r');
     $data = '';
 
-    while(!feof($file))
-    {
+    while (!feof($file)) {
         $data .= fgets($file);
     }
 
