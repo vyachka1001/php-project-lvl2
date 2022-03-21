@@ -12,11 +12,17 @@ function genDiff(string $path1, string $path2): string
     $keysJson1 = getSortedArrayKeys($decodedJson1);
     $keysJson2 = getSortedArrayKeys($decodedJson2);
 
+    $diff = getDifferencesString($decodedJson1, $decodedJson2, $keysJson1, $keysJson2);
+
+    return "{{$diff}\n}\n";
+}
+
+function getDifferencesString(array $decodedJson1, array $decodedJson2, array $keysJson1, array $keysJson2)
+{
     $indexJson1 = 0;
     $indexJson2 = 0;
     $lengthJson1 = \count($decodedJson1);
     $lengthJson2 = \count($decodedJson2);
-
     $signs = ['first' => '-', 'second' => '+', 'equal' => ' '];
     $diff = '';
 
@@ -50,7 +56,7 @@ function genDiff(string $path1, string $path2): string
         $diff .= getRestOfData($decodedJson2, $indexJson2, $signs['second']);
     }
 
-    return "{{$diff}\n}\n";
+    return $diff;
 }
 
 function getSortedArrayKeys(array $arr): array
