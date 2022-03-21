@@ -17,10 +17,8 @@ function genDiff(string $path1, string $path2): string
     $lengthJson1 = \count($decodedJson1);
     $lengthJson2 = \count($decodedJson2);
 
-    $diffSign1 = '-';
-    $diffSign2 = '+';
-    $diffSignEqual = ' ';
-    $diff = '{';
+    $signs = ['first' => '-', 'second' => '+', 'equal' => ' '];
+    $diff = '';
 
     while ($indexJson1 < $lengthJson1 && $indexJson2 < $lengthJson2) {
         $key1 = $keysJson1[$indexJson1];
@@ -28,17 +26,17 @@ function genDiff(string $path1, string $path2): string
 
         $comparisonResult = \strcmp($key1, $key2);
         if ($comparisonResult > 0) {
-            $diff = addToDifference($diff, $diffSign2, $key2, $decodedJson2);
+            $diff .= createDifference($signs['second'], $key2, $decodedJson2);
             $indexJson2++;
         } elseif ($comparisonResult < 0) {
-            $diff = addToDifference($diff, $diffSign1, $key1, $decodedJson1);
+            $diff .= createDifference($signs['first'], $key1, $decodedJson1);
             $indexJson1++;
         } else {
             if ($decodedJson1[$key1] != $decodedJson2[$key2]) {
-                $diff = addToDifference($diff, $diffSign1, $key1, $decodedJson1);
-                $diff = addToDifference($diff, $diffSign2, $key2, $decodedJson2);
+                $diff .= createDifference($signs['first'], $key1, $decodedJson1);
+                $diff .= createDifference($signs['second'], $key2, $decodedJson2);
             } else {
-                $diff = addToDifference($diff, $diffSignEqual, $key1, $decodedJson1);
+                $diff .= createDifference($signs['equal'], $key1, $decodedJson1);
             }
 
             $indexJson1++;
@@ -47,14 +45,12 @@ function genDiff(string $path1, string $path2): string
     }
 
     if ($indexJson1 < $lengthJson1) {
-        $diff = addRestOfTheData($diff, $keysJson1, $decodedJson1, $indexJson1, $diffSign1);
+        $diff .= getRestOfData($decodedJson1, $indexJson1, $signs['first']);
     } elseif ($indexJson2 < $lengthJson2) {
-        $diff = addRestOfTheData($diff, $keysJson2, $decodedJson2, $indexJson2, $diffSign2);
+        $diff .= getRestOfData($decodedJson2, $indexJson2, $signs['second']);
     }
 
-    $diff .= "\n}\n";
-
-    return $diff;
+    return "{{$diff}\n}\n";
 }
 
 function getSortedArrayKeys(array $arr): array
@@ -72,17 +68,19 @@ function formKeyValueStr(string $key, array $decodedJson): string
     return $result;
 }
 
-function addToDifference(string $diff, string $diffSign, string $key, array $jsonData): string
+function createDifference(string $diffSign, string $key, array $jsonData): string
 {
     $strJson = formKeyValueStr($key, $jsonData);
-    $diff = "{$diff}\n  {$diffSign} {$strJson}";
+    $diff = "\n  {$diffSign} {$strJson}";
 
     return $diff;
 }
 
-function addRestOfTheData(string $diff, array $keys, array $jsonData, int $startIndex, string $diffChar): string
+function getRestOfData(array $jsonData, int $startIndex, string $diffChar): string
 {
     $length = count($jsonData);
+    $keys = getSortedArrayKeys($jsonData);
+    $diff = '';
     for ($ind = $startIndex; $ind < $length; $ind++) {
         $key = $keys[$ind];
         $strJson = formKeyValueStr($key, $jsonData);
