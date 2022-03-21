@@ -3,6 +3,7 @@
 namespace Tests\Src\DataDecoding;
 
 use PHPUnit\Framework\TestCase;
+
 use function Src\DataDecoding\Decoder\getJsonDecodedArray;
 
 class DecoderTest extends TestCase
