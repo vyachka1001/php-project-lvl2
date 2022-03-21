@@ -4,6 +4,7 @@ namespace Src\DataDecoding\Decoder;
 
 function getJsonDecodedArray($path): array
 {
+    //$path = __DIR__ . "/../../resources/" . $path;
     $json = readDataFromFile($path);
     $decodedJson = json_decode($json, true);
 
