@@ -9,3 +9,6 @@ validate:
 
 update:
 	composer update
+
+test:
+	composer exec --verbose phpunit tests
