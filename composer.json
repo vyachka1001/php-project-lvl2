@@ -15,7 +15,7 @@
         },
         "files": [
             "src/DataDecoding/Decoder.php",
-            "src/differ/Generator.php"
+            "src/Differ/Generator.php"
         ]
         
     },
