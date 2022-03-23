@@ -8,7 +8,7 @@ use function Hexlet\Code\Parsers\YamlParser\getYamlParsedArray;
 function genDiff(string $path1, string $path2): string
 {
     $parsed1 = getParsedArray($path1);
-    $parsed2 = getParsedArray($path2); 
+    $parsed2 = getParsedArray($path2);
     $keys1 = getSortedArrayKeys($parsed1);
     $keys2 = getSortedArrayKeys($parsed2);
 
