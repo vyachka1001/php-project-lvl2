@@ -1,14 +1,14 @@
 <?php
 
-namespace Hexlet\Code\DataDecoding\Decoder;
+namespace Hexlet\Code\Parsers\JsonParser;
 
-function getJsonDecodedArray($path): array
+function getJsonParsedArray($path): array
 {
     //$path = __DIR__ . "/../../resources/" . $path;
     $json = readDataFromFile($path);
-    $decodedJson = json_decode($json, true);
+    $parsedJson = \json_decode($json, true);
 
-    return $decodedJson;
+    return $parsedJson;
 }
 
 function readDataFromFile(string $filePath): string
