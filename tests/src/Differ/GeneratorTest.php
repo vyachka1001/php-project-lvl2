@@ -8,23 +8,28 @@ use function Differ\Differ\genDiff;
 
 class GeneratorTest extends TestCase
 {
-    private string $path1 = __DIR__ . "/../../fixtures/file1.json";
-    private string $path2 = __DIR__ . "/../../fixtures/file2.json";
+    private string $jsonPath1 = __DIR__ . "/../../fixtures/json/file1.json";
+    private string $jsonPath2 = __DIR__ . "/../../fixtures/json/file2.json";
+    private string $yamlPath1 = __DIR__ . "/../../fixtures/yaml/file1.yaml";
+    private string $yamlPath2 = __DIR__ . "/../../fixtures/yaml/file2.yaml";
 
     public function testGenDiff1()
     {
         $diffExpected = [
             '- follow: false',
-            '  host: \'hexlet.io\'',
-            '- proxy: \'123.234.53.22\'',
+            '  host: hexlet.io',
+            '- proxy: 123.234.53.22',
             '- timeout: 50',
             '+ timeout: 20',
             '+ verbose: true'
         ];
 
         $expected = $this::buildExpectedDiff($diffExpected);
-        $actual = genDiff($this->path1, $this->path2);
 
+        $actual = genDiff($this->jsonPath1, $this->jsonPath2);
+        $this->assertEquals($expected, $actual);
+
+        $actual = genDiff($this->yamlPath1, $this->yamlPath2);
         $this->assertEquals($expected, $actual);
     }
 
@@ -32,16 +37,19 @@ class GeneratorTest extends TestCase
     {
         $diffExpected = [
             '+ follow: false',
-            '  host: \'hexlet.io\'',
-            '+ proxy: \'123.234.53.22\'',
+            '  host: hexlet.io',
+            '+ proxy: 123.234.53.22',
             '- timeout: 20',
             '+ timeout: 50',
             '- verbose: true'
         ];
 
         $expected = $this::buildExpectedDiff($diffExpected);
-        $actual = genDiff($this->path2, $this->path1);
 
+        $actual = genDiff($this->jsonPath2, $this->jsonPath1);
+        $this->assertEquals($expected, $actual);
+
+        $actual = genDiff($this->yamlPath2, $this->yamlPath1);
         $this->assertEquals($expected, $actual);
     }
 
