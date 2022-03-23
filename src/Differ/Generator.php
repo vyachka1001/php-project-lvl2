@@ -17,7 +17,7 @@ function genDiff(string $path1, string $path2): string
     return "{{$diff}\n}\n";
 }
 
-function getDifferencesString(array $decodedJson1, array $decodedJson2, array $keysJson1, array $keysJson2)
+function getDifferencesString(array $decodedJson1, array $decodedJson2, array $keysJson1, array $keysJson2): string
 {
     $indexJson1 = 0;
     $indexJson2 = 0;
@@ -69,9 +69,19 @@ function getSortedArrayKeys(array $arr): array
 
 function formKeyValueStr(string $key, array $decodedJson): string
 {
-    $result = $key . ": " . var_export($decodedJson[$key], true);
+    $value = getStringValueOfElement($decodedJson[$key]);
+    $result = $key . ": " . $value;
 
     return $result;
+}
+
+function getStringValueOfElement($element): string
+{
+    if (\is_bool($element)) {
+        return var_export($element, true);
+    } else {
+        return \strval($element);
+    }
 }
 
 function createDifference(string $diffSign, string $key, array $jsonData): string
