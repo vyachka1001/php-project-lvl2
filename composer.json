@@ -1,9 +1,10 @@
 {
     "name": "hexlet/code",
-    "description": "this utility generates difference between .json/.yaml files",
+    "description": "this utility generates difference between two .json/.yaml files",
     "type": "library",
     "require": {
-        "docopt/docopt": "^1.0"
+        "docopt/docopt": "^1.0",
+        "symfony/yaml": "^5.4"
     },
     "bin": [
         "bin/gendiff"
@@ -14,8 +15,9 @@
             "Hexlet\\Code\\": "src/"
         },
         "files": [
-            "src/DataDecoding/Decoder.php",
-            "src/Differ/Generator.php"
+            "src/Parsers/JsonParser.php",
+            "src/Differ/Generator.php",
+            "src/Parsers/YamlParser.php"
         ]
         
     },
