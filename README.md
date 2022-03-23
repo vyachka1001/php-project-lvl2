@@ -1,7 +1,7 @@
 Difference generation package
 
-[![PHP CI](https://github.com/vyachka1001/php-project-lvl2/actions/workflows/php-ci.yml/badge.svg)](https://github.com/vyachka1001/php-project-lvl2/actions/workflows/php-ci.yml)
 ### Hexlet tests and linter status:
+[![PHP CI](https://github.com/vyachka1001/php-project-lvl2/actions/workflows/php-ci.yml/badge.svg)](https://github.com/vyachka1001/php-project-lvl2/actions/workflows/php-ci.yml)
 [![Actions Status](https://github.com/vyachka1001/php-project-lvl2/workflows/hexlet-check/badge.svg)](https://github.com/vyachka1001/php-project-lvl2/actions)
 [![Maintainability](https://api.codeclimate.com/v1/badges/e4ceea059edf57f7f360/maintainability)](https://codeclimate.com/github/vyachka1001/php-project-lvl2/maintainability)
 
