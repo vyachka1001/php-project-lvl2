@@ -9,4 +9,4 @@ Difference generation package
 This package generates difference between two plain json files in terminal
 
 Intermediate version sample with low functionality: 
-[![asciicast](https://asciinema.org/a/3AsGFDOAegGizwJT1sWHt8Yp6.svg)](https://asciinema.org/a/3AsGFDOAegGizwJT1sWHt8Yp6)
+[![asciicast](https://asciinema.org/a/oRVNkcuCBunhAg5innoCuvOMd.svg)](https://asciinema.org/a/oRVNkcuCBunhAg5innoCuvOMd)
