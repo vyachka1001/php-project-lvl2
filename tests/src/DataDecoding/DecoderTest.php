@@ -8,7 +8,7 @@ use function Hexlet\Code\DataDecoding\Decoder\getJsonDecodedArray;
 
 class DecoderTest extends TestCase
 {
-    public function testGetJsonDecodedArray()
+    public function testGetJsonDecodedArray(): void
     {
         $jsonDecodedExpected = [
             "host" => "hexlet.io",
