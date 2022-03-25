@@ -26,5 +26,5 @@ DOC;
 
 $docoptObj = Docopt::handle($doc, array('version'=>'Naval Fate 2.0'));
 $args = $docoptObj->args;
-$diff = genDiff($args["<firstFile>"], $args["<secondFile>"]);
+$diff = genDiff($args["<firstFile>"], $args["<secondFile>"], $args['--format']);
 print_r($diff);
