@@ -17,7 +17,7 @@ class JsonParserTest extends TestCase
             "follow" => false
         ];
 
-        $path = __DIR__ . "/../../fixtures/json/file1.json";
+        $path = __DIR__ . "/../../fixtures/json/file3.json";
         $jsonParsedActual = getJsonParsedArray($path);
         $this->assertEquals($jsonParsedExpected, $jsonParsedActual);
     }
