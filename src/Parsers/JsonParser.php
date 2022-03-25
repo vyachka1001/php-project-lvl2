@@ -2,11 +2,11 @@
 
 namespace Hexlet\Code\Parsers\JsonParser;
 
-function getJsonParsedArray($path): array
+function getJsonParsedObject($path): object
 {
     //$path = __DIR__ . "/../../resources/" . $path;
     $json = readDataFromFile($path);
-    $parsedJson = \json_decode($json, true);
+    $parsedJson = \json_decode($json);
 
     return $parsedJson;
 }
