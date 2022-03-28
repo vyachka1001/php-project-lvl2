@@ -7,17 +7,17 @@ use Differ\TreeStructure\DiffTree;
 function formatDiffStr(array $diffTree, string $format): string
 {
     switch ($format) {
-        case 'plain':
-            return formatInPlain($diffTree);
+        /*case 'plain':
+            return formatInPlain($diffTree);*/
         default:
             return formatInStylish($diffTree);
     }
 }
 
-function formatInPlain(array $tree): string
+/*function formatInPlain(array $tree): string
 {
     return 'string';
-}
+}*/
 
 function formatInStylish(array $tree): string
 {
