@@ -1,6 +1,16 @@
 {
-    "host": "hexlet.io",
-    "timeout": 50,
-    "proxy": "123.234.53.22",
-    "follow": false
+  "common": {
+    "setting4": "val"
+  },
+  "co": {
+    "set": "key"
+  },
+  "host": "hexlet.io",
+  "z": {
+    "key": {
+      "key": {
+        "key": null
+      }
+    }
+  }
 }

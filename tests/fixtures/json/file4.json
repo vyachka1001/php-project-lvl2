@@ -1,5 +1,13 @@
 {
-    "timeout": 20,
-    "verbose": true,
-    "host": "hexlet.io"
+    "host": "hexlet.io",
+    "follow": "false",
+    "common": {
+        "setting4": "al"
+    },
+    "co": {
+        "set": "key"
+    },
+    "com": {
+        "setting1": "val"
+    }
 }

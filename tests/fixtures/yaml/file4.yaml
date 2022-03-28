@@ -1,5 +1,12 @@
-timeout: 20
-
-verbose: true
-
 host: hexlet.io
+
+follow: false
+
+co:
+  set: key
+
+common:
+  setting4: al
+
+com:
+  setting1: val
