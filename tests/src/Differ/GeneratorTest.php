@@ -8,10 +8,10 @@ use function Differ\Differ\genDiff;
 
 class GeneratorTest extends TestCase
 {
-    private string $jsonPath1 = __DIR__ . "/../../fixtures/json/file1.json";
-    private string $jsonPath2 = __DIR__ . "/../../fixtures/json/file2.json";
-    private string $yamlPath1 = __DIR__ . "/../../fixtures/yaml/file1.yaml";
-    private string $yamlPath2 = __DIR__ . "/../../fixtures/yaml/file2.yaml";
+    private string $jsonPath1 = __DIR__ . "/../../fixtures/json/file3.json";
+    private string $jsonPath2 = __DIR__ . "/../../fixtures/json/file4.json";
+    private string $yamlPath1 = __DIR__ . "/../../fixtures/yaml/file3.yaml";
+    private string $yamlPath2 = __DIR__ . "/../../fixtures/yaml/file4.yaml";
 
     public function testGenDiff1()
     {

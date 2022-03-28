@@ -29,9 +29,6 @@ function buildDiffTree(array $obj_vars1, array $obj_vars2): array
                     $node,
                     buildDiffTree(\get_object_vars($obj_vars1[$key1]), \get_object_vars($obj_vars2[$key1]))
                 );
-            } elseif (is_array($obj_vars1[$key1]) && is_array($obj_vars2[$key2])) {
-                $node = DiffTree\makeNode($key1);
-                DiffTree\setChildren($node, buildDiffTree($obj_vars1[$key1], $obj_vars2[$key2]));
             } else {
                 if ($obj_vars1[$key1] === $obj_vars2[$key2]) {
                     $node = buildCurrNode($key1, $obj_vars1);
