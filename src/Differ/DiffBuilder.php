@@ -63,7 +63,7 @@ function buildDiffTree(array $obj_vars1, array $obj_vars2): array
     return $diffTree;
 }
 
-function buildCurrNode(string $key, array $obj_vars, string $sign = null): array
+function buildCurrNode(string $key, array $obj_vars, string $sign = ' '): array
 {
     $node = DiffTree\makeNode($key);
     DiffTree\setSign($node, $sign);
