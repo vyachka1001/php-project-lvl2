@@ -8,8 +8,17 @@ function makeNode(string $name): array
         "name" => $name,
         "value" => null,
         "children" => null,
-        "sign" => null
+        "sign" => " "
     ];
+}
+
+function getName(array $tree, mixed $default = null): ?string
+{
+    if (array_key_exists('name', $tree)) {
+        return $tree['name'];
+    }
+
+    return $default;
 }
 
 function setNodeValue(array &$tree, string $value): void
@@ -17,7 +26,7 @@ function setNodeValue(array &$tree, string $value): void
     $tree['value'] = $value;
 }
 
-function getValue(array $tree, mixed $default = null): mixed
+function getValue(array $tree, mixed $default = null): ?string
 {
     if (array_key_exists('value', $tree)) {
         return $tree['value'];
@@ -31,7 +40,7 @@ function setChildren(array &$tree, array $children): void
     $tree['children'] = $children;
 }
 
-function getChildren(array $tree, mixed $default = null): mixed
+function getNodeChildren(array $tree, mixed $default = null): ?array
 {
     if (array_key_exists('children', $tree)) {
         return $tree['children'];
@@ -45,7 +54,7 @@ function setSign(array &$tree, string $sign = null): void
     $tree['sign'] = $sign;
 }
 
-function getSign(array $tree, $value, mixed $default = null): mixed
+function getSign(array $tree, string $default = ' '): string
 {
     if (array_key_exists('sign', $tree)) {
         return $tree['sign'];
