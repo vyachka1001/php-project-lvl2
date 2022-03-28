@@ -15,16 +15,13 @@ class GeneratorTest extends TestCase
 
     public function testGenDiff1()
     {
-        $diffExpected = [
-            '- follow: false',
-            '  host: hexlet.io',
-            '- proxy: 123.234.53.22',
-            '- timeout: 50',
-            '+ timeout: 20',
-            '+ verbose: true'
-        ];
-
-        $expected = $this::buildExpectedDiff($diffExpected);
+        $expected = "{\n" . "    co: {\n" . \str_repeat(' ', 4) . "    set: key\n" . \str_repeat(' ', 4) .
+            "}\n" . "  + com: {\n" . \str_repeat(' ', 4) . "    setting1: val\n" . \str_repeat(' ', 4) .
+            "}\n" . \str_repeat(' ', 4) . "common: {\n" . \str_repeat(' ', 4) . "  - setting4: val\n" .
+            \str_repeat(' ', 4) . "  + setting4: al\n" . \str_repeat(' ', 4) . "}\n" . "  + follow: false\n" .
+            "    host: hexlet.io\n" . "  - z: {\n" . \str_repeat(' ', 4) . "    key: {\n" . \str_repeat(' ', 8) .
+            "    key: {\n" . \str_repeat(' ', 12) . "    key: null\n" . \str_repeat(' ', 12) . "}\n" .
+            \str_repeat(' ', 8) . "}\n" . \str_repeat(' ', 4) . "}\n" . "}\n";
 
         $actual = genDiff($this->jsonPath1, $this->jsonPath2);
         $this->assertEquals($expected, $actual);
@@ -35,28 +32,18 @@ class GeneratorTest extends TestCase
 
     public function testGenDiff2()
     {
-        $diffExpected = [
-            '+ follow: false',
-            '  host: hexlet.io',
-            '+ proxy: 123.234.53.22',
-            '- timeout: 20',
-            '+ timeout: 50',
-            '- verbose: true'
-        ];
-
-        $expected = $this::buildExpectedDiff($diffExpected);
+        $expected = "{\n" . "    co: {\n" . \str_repeat(' ', 4) . "    set: key\n" . \str_repeat(' ', 4) .
+            "}\n" . "  - com: {\n" . \str_repeat(' ', 4) . "    setting1: val\n" . \str_repeat(' ', 4) .
+            "}\n" . \str_repeat(' ', 4) . "common: {\n" . \str_repeat(' ', 4) . "  - setting4: al\n" .
+            \str_repeat(' ', 4) . "  + setting4: val\n" . \str_repeat(' ', 4) . "}\n" . "  - follow: false\n" .
+            "    host: hexlet.io\n" . "  + z: {\n" . \str_repeat(' ', 4) . "    key: {\n" . \str_repeat(' ', 8) .
+            "    key: {\n" . \str_repeat(' ', 12) . "    key: null\n" . \str_repeat(' ', 12) . "}\n" .
+            \str_repeat(' ', 8) . "}\n" . \str_repeat(' ', 4) . "}\n" . "}\n";
 
         $actual = genDiff($this->jsonPath2, $this->jsonPath1);
         $this->assertEquals($expected, $actual);
 
         $actual = genDiff($this->yamlPath2, $this->yamlPath1);
         $this->assertEquals($expected, $actual);
-    }
-
-    public static function buildExpectedDiff($diff): string
-    {
-        $expectedDiff = \implode("\n  ", $diff);
-
-        return "{\n  {$expectedDiff}\n}\n";
     }
 }
