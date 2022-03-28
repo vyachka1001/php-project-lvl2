@@ -35,7 +35,7 @@ function buildTreeWithValuesAndBrackets(array $tree, int $spacesCount = 0): stri
         if (!\is_null($children)) {
             $sign = DiffTree\getSign($key);
             $name = DiffTree\getName($key);
-            $acc .= \str_repeat(' ', $spacesCount). "  {$sign} {$name}: {\n";
+            $acc .= \str_repeat(' ', $spacesCount) . "  {$sign} {$name}: {\n";
             $acc .= buildTreeWithValuesAndBrackets($children, $spacesCount + $spacesStep);
             return $acc . \str_repeat(" ", $spacesCount + $spacesStep) . "}\n";
         } else {
