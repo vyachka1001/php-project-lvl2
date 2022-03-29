@@ -5,7 +5,8 @@ namespace Differ\Differ;
 use function Hexlet\Code\Parsers\JsonParser\getJsonParsedObject;
 use function Hexlet\Code\Parsers\YamlParser\getYamlParsedObject;
 use function Differ\DiffBuilder\buildDiffTree;
-use function Differ\DiffFormatter\formatDiffStr;
+use function Formatters\StylishFormatter\formatInStylish;
+use function Formatters\PlainFormatter\formatInPlain;
 
 function genDiff(string $path1, string $path2, string $format = 'stylish'): string
 {
@@ -37,4 +38,14 @@ function getFileExtension(string $path): string
     $extension = \substr($path, $extensionPointInd);
 
     return $extension;
+}
+
+function formatDiffStr(array $diffTree, string $format): string
+{
+    switch ($format) {
+        case 'plain':
+            return formatInPlain($diffTree);
+        default:
+            return formatInStylish($diffTree);
+    }
 }
