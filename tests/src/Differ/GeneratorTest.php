@@ -13,7 +13,7 @@ class GeneratorTest extends TestCase
     private string $yamlPath1 = __DIR__ . "/../../fixtures/yaml/file3.yaml";
     private string $yamlPath2 = __DIR__ . "/../../fixtures/yaml/file4.yaml";
 
-    public function testGenDiff1()
+    public function testGenDiffInStylish1(): void
     {
         $expected = "{\n" . "    co: {\n" . \str_repeat(' ', 4) . "    set: key\n" . \str_repeat(' ', 4) .
             "}\n" . "  + com: {\n" . \str_repeat(' ', 4) . "    setting1: val\n" . \str_repeat(' ', 4) .
@@ -30,7 +30,7 @@ class GeneratorTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
-    public function testGenDiff2()
+    public function testGenDiffInStylish2(): void
     {
         $expected = "{\n" . "    co: {\n" . \str_repeat(' ', 4) . "    set: key\n" . \str_repeat(' ', 4) .
             "}\n" . "  - com: {\n" . \str_repeat(' ', 4) . "    setting1: val\n" . \str_repeat(' ', 4) .
@@ -44,6 +44,34 @@ class GeneratorTest extends TestCase
         $this->assertEquals($expected, $actual);
 
         $actual = genDiff($this->yamlPath2, $this->yamlPath1);
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testGenDiffInPlain3(): void
+    {
+        $expected = "Property 'com.setting1' was added with value: 'val'" . "\n" .
+            "Property 'common.setting4' was updated. From 'val' to 'al'" . "\n" .
+            "Property 'follow' was added with value: 'false'" . "\n" .
+            "Property 'group2' was removed" . "\n";
+
+        $actual = genDiff($this->jsonPath1, $this->jsonPath2, 'plain');
+        $this->assertEquals($expected, $actual);
+
+        $actual = genDiff($this->yamlPath1, $this->yamlPath2, 'plain');
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testGenDiffInPlain4(): void
+    {
+        $expected = "Property 'com' was removed" . "\n" .
+            "Property 'common.setting4' was updated. From 'al' to 'val'" . "\n" .
+            "Property 'follow' was removed" . "\n" .
+            "Property 'z' was added with value: [complex value]" . "\n";
+
+        $actual = genDiff($this->jsonPath1, $this->jsonPath2, 'plain');
+        $this->assertEquals($expected, $actual);
+
+        $actual = genDiff($this->yamlPath1, $this->yamlPath2, 'plain');
         $this->assertEquals($expected, $actual);
     }
 }
