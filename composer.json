@@ -20,7 +20,8 @@
             "src/Parsers/YamlParser.php",
             "src/Differ/DiffBuilder.php",
             "src/Differ/TreeStructure/DiffTree.php",
-            "src/Differ/DiffFormatter.php"
+            "src/Formatters/PlainFormatter.php",
+            "src/Formatters/StylishFormatter.php"
         ]
         
     },
