@@ -1,6 +1,6 @@
 <?php
 
-namespace Differ\TreeStructure\DiffTree;
+namespace Differ\Structures\DiffTree;
 
 function makeNode(string $name): array
 {

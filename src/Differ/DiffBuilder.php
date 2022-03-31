@@ -2,7 +2,7 @@
 
 namespace Differ\DiffBuilder;
 
-use Differ\TreeStructure\DiffTree;
+use Differ\Structures\DiffTree;
 
 function buildDiffTree(array $obj_vars1, array $obj_vars2): array
 {

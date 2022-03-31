@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\src\Differ;
+namespace Tests\Differ\Structures;
 
 use PHPUnit\Framework\TestCase;
-use Differ\TreeStructure\DiffTree;
+use Differ\Structures\DiffTree;
 
 class DiffTreeTest extends TestCase
 {

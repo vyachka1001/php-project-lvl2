@@ -2,7 +2,7 @@
 
 namespace Formatters\StylishFormatter;
 
-use Differ\TreeStructure\DiffTree;
+use Differ\Structures\DiffTree;
 
 function formatInStylish(array $tree): string
 {
