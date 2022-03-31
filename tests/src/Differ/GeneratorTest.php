@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\src\Differ;
+namespace Tests\Differ;
 
 use PHPUnit\Framework\TestCase;
 
@@ -49,10 +49,10 @@ class GeneratorTest extends TestCase
 
     public function testGenDiffInPlain3(): void
     {
-        $expected = "Property 'com.setting1' was added with value: 'val'" . "\n" .
+        $expected = "Property 'com' was added with value: [complex value]" . "\n" .
             "Property 'common.setting4' was updated. From 'val' to 'al'" . "\n" .
-            "Property 'follow' was added with value: 'false'" . "\n" .
-            "Property 'group2' was removed" . "\n";
+            "Property 'follow' was added with value: false" . "\n" .
+            "Property 'z' was removed" . "\n";
 
         $actual = genDiff($this->jsonPath1, $this->jsonPath2, 'plain');
         $this->assertEquals($expected, $actual);
@@ -68,10 +68,10 @@ class GeneratorTest extends TestCase
             "Property 'follow' was removed" . "\n" .
             "Property 'z' was added with value: [complex value]" . "\n";
 
-        $actual = genDiff($this->jsonPath1, $this->jsonPath2, 'plain');
+        $actual = genDiff($this->jsonPath2, $this->jsonPath1, 'plain');
         $this->assertEquals($expected, $actual);
 
-        $actual = genDiff($this->yamlPath1, $this->yamlPath2, 'plain');
+        $actual = genDiff($this->yamlPath2, $this->yamlPath1, 'plain');
         $this->assertEquals($expected, $actual);
     }
 }
