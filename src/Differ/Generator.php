@@ -7,6 +7,7 @@ use function Hexlet\Code\Parsers\YamlParser\getYamlParsedObject;
 use function Differ\DiffBuilder\buildDiffTree;
 use function Formatters\StylishFormatter\formatInStylish;
 use function Formatters\PlainFormatter\formatInPlain;
+use function Formatters\JsonFormatter\formatInJson;
 
 function genDiff(string $path1, string $path2, string $format = 'stylish'): string
 {
@@ -45,6 +46,8 @@ function formatDiffStr(array $diffTree, string $format): string
     switch ($format) {
         case 'plain':
             return formatInPlain($diffTree);
+        case 'json':
+            return formatInJson($diffTree);
         default:
             return formatInStylish($diffTree);
     }
