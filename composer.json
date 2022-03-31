@@ -21,7 +21,8 @@
             "src/Differ/DiffBuilder.php",
             "src/Differ/Structures/DiffTree.php",
             "src/Formatters/PlainFormatter.php",
-            "src/Formatters/StylishFormatter.php"
+            "src/Formatters/StylishFormatter.php",
+            "src/Formatters/JsonFormatter.php"
         ]
         
     },
