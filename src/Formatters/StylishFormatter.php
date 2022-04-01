@@ -13,8 +13,7 @@ function formatInStylish(array $tree): string
 
 function buildTreeWithValuesAndBrackets(array $tree, int $spacesCount = 0): string
 {
-    $formattedTree = '';
-    $formattedTree .= \array_reduce($tree, function ($acc, $key) use ($spacesCount) {
+    $formattedTree = \array_reduce($tree, function ($acc, $key) use ($spacesCount) {
         $children = DiffTree\getNodeChildren($key);
         $spacesStep = 4;
         if (!\is_null($children)) {
