@@ -2,13 +2,13 @@
 
 namespace Differ\Structures\DiffTree;
 
-function makeNode(string $name): array
+function makeNode(string $name, $value = null, $children = null, $sign = null): array
 {
     return [
         "name" => $name,
-        "value" => null,
-        "children" => null,
-        "sign" => null
+        "value" => $value,
+        "children" => $children,
+        "sign" => $sign
     ];
 }
 
@@ -19,9 +19,11 @@ function getName(array $tree): ?string
 
 function setNodeValue(array $tree, string $value): array
 {
-    $tree['value'] = $value;
+    $name = getName($tree);
+    $children = getNodeChildren($tree);
+    $sign = getSign($tree);
 
-    return $tree;
+    return makeNode($name, $value, $children, $sign);
 }
 
 function getValue(array $tree, string $default = null): ?string
@@ -33,9 +35,13 @@ function getValue(array $tree, string $default = null): ?string
     return $default;
 }
 
-function setChildren(array &$tree, array $children): void
+function setChildren(array $tree, array $children): array
 {
-    $tree['children'] = $children;
+    $name = getName($tree);
+    $value = getValue($tree);
+    $sign = getSign($tree);
+
+    return makeNode($name, $value, $children, $sign);
 }
 
 function getNodeChildren(array $tree, string $default = null): ?array
@@ -47,9 +53,13 @@ function getNodeChildren(array $tree, string $default = null): ?array
     return $default;
 }
 
-function setSign(array &$tree, string $sign = null): void
+function setSign(array $tree, string $sign = null): array
 {
-    $tree['sign'] = $sign;
+    $name = getName($tree);
+    $children = getNodeChildren($tree);
+    $value = getValue($tree);
+
+    return makeNode($name, $value, $children, $sign);
 }
 
 function getSign(array $tree, string $default = ' '): string
