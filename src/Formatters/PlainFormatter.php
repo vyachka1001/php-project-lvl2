@@ -97,5 +97,5 @@ function getDiffValue(string $value): string
 {
     $keywords = ['true', 'false', 'null', '[complex value]'];
 
-    return (\in_array($value, $keywords, true) || \is_int((int)$value)) ? $value : "'{$value}'";
+    return (\in_array($value, $keywords, true) || \is_numeric($value)) ? $value : "'{$value}'";
 }
