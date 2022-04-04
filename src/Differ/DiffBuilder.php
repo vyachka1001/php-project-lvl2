@@ -25,7 +25,7 @@ function buildDiffTree(array $obj_vars1, array $obj_vars2): array
         if ($comparisonResult === 0) {
             if (is_object($obj_vars1[$key1]) && is_object($obj_vars2[$key2])) {
                 $node = DiffTree\makeNode($key1);
-                DiffTree\setChildren(
+                $node = DiffTree\setChildren(
                     $node,
                     buildDiffTree(\get_object_vars($obj_vars1[$key1]), \get_object_vars($obj_vars2[$key1]))
                 );
@@ -63,9 +63,9 @@ function buildDiffTree(array $obj_vars1, array $obj_vars2): array
 function buildCurrNode(string $key, array $obj_vars, string $sign = ' '): array
 {
     $node = DiffTree\makeNode($key);
-    DiffTree\setSign($node, $sign);
+    $node = DiffTree\setSign($node, $sign);
     if (is_object($obj_vars[$key])) {
-        DiffTree\setChildren($node, buildTreeRecursive(\get_object_vars($obj_vars[$key])));
+        $node = DiffTree\setChildren($node, buildTreeRecursive(\get_object_vars($obj_vars[$key])));
     } else {
         $node = DiffTree\setNodeValue($node, getStringValueOfElement($obj_vars[$key]));
     }
@@ -80,7 +80,7 @@ function buildTreeRecursive(array $obj_vars): array
     foreach ($keys as $key) {
         $node = DiffTree\makeNode($key);
         if (is_object($obj_vars[$key])) {
-            DiffTree\setChildren($node, buildTreeRecursive(\get_object_vars($obj_vars[$key])));
+            $node = DiffTree\setChildren($node, buildTreeRecursive(\get_object_vars($obj_vars[$key])));
         } else {
             $node = DiffTree\setNodeValue($node, getStringValueOfElement($obj_vars[$key]));
         }

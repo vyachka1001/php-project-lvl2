@@ -29,7 +29,7 @@ function buildDiffArray(array $tree, string $namespace = null): array
             $value = !\is_null($children) ? '[complex value]' :  DiffTree\getValue($key);
             $currName = !\is_null($namespace) ? "{$namespace}.{$name}" : $name;
             $node = DiffTree\makeNode($currName);
-            DiffTree\setSign($node, $sign);
+            $node = DiffTree\setSign($node, $sign);
             $node = DiffTree\setNodeValue($node, $value);
             $acc[] = $node;
             return $acc;
