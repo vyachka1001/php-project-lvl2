@@ -11,13 +11,9 @@ function formatInJson(array $tree): string
     $deletedValues = buildChangedValues($tree, '-');
 
     //somehow find updates and filter this stupid values;
-    $diffArr1 = PlainFormatter\buildDiffArray($addedValues);
-    $diffArr2 = PlainFormatter\buildDiffArray($deletedValues);
+    $outputString = createJsonFormattedString($deletedValues, $addedValues);    
 
-    $arr = \array_intersect_key($diffArr1, $diffArr2);
-    print_r($arr);
-
-    return '$outputString\n';
+    return "{\n" . $outputString . "}";
 }
 
 function buildChangedValues(array $tree, string $sign = ''): array
@@ -68,4 +64,16 @@ function createCurrNode(array $tree, int $spacesCount = 0): string
     }, '');
 
     return $formattedTree;
+}
+
+function createJsonFormattedString(array $deletedValues, array $addedValues): string
+{
+    $spacesStep = 4;
+    $output = \str_repeat(' ', $spacesStep) . "deleted: {\n" . createCurrNode($deletedValues, $spacesStep) . 
+        \str_repeat(' ', $spacesStep) . "}\n";
+
+    $output .= \str_repeat(' ', $spacesStep) . "added: {\n" . createCurrNode($addedValues, $spacesStep) . 
+        \str_repeat(' ', $spacesStep) . "}\n";
+    
+    return $output;
 }
