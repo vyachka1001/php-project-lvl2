@@ -27,16 +27,20 @@ function getParsedObject(string $path): object
 {
     $extension = getFileExtension($path);
     if ($extension === '.yaml' || $extension === '.yml') {
-        return getYamlParsedObject($path);
+        $object =  getYamlParsedObject($path);
     } elseif ($extension === '.json') {
-        return getJsonParsedObject($path);
+        $object = getJsonParsedObject($path);
     }
+
+    return $object;
 }
 
 function getFileExtension(string $path): string
 {
     $extensionPointInd = \strrpos($path, ".");
-    $extension = \substr($path, $extensionPointInd);
+    if ($extensionPointInd) {
+        $extension = \substr($path, $extensionPointInd);
+    }
 
     return $extension;
 }
