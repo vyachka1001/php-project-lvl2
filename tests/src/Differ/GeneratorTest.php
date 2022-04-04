@@ -21,7 +21,7 @@ class GeneratorTest extends TestCase
             \str_repeat(' ', 4) . "  + setting4: al\n" . \str_repeat(' ', 4) . "}\n" . "  + follow: false\n" .
             "    host: hexlet.io\n" . "  - z: {\n" . \str_repeat(' ', 4) . "    key: {\n" . \str_repeat(' ', 8) .
             "    key: {\n" . \str_repeat(' ', 12) . "    key: null\n" . \str_repeat(' ', 12) . "}\n" .
-            \str_repeat(' ', 8) . "}\n" . \str_repeat(' ', 4) . "}\n" . "}\n";
+            \str_repeat(' ', 8) . "}\n" . \str_repeat(' ', 4) . "}\n" . "}";
 
         $actual = genDiff($this->jsonPath1, $this->jsonPath2);
         $this->assertEquals($expected, $actual);
@@ -38,7 +38,7 @@ class GeneratorTest extends TestCase
             \str_repeat(' ', 4) . "  + setting4: val\n" . \str_repeat(' ', 4) . "}\n" . "  - follow: false\n" .
             "    host: hexlet.io\n" . "  + z: {\n" . \str_repeat(' ', 4) . "    key: {\n" . \str_repeat(' ', 8) .
             "    key: {\n" . \str_repeat(' ', 12) . "    key: null\n" . \str_repeat(' ', 12) . "}\n" .
-            \str_repeat(' ', 8) . "}\n" . \str_repeat(' ', 4) . "}\n" . "}\n";
+            \str_repeat(' ', 8) . "}\n" . \str_repeat(' ', 4) . "}\n" . "}";
 
         $actual = genDiff($this->jsonPath2, $this->jsonPath1);
         $this->assertEquals($expected, $actual);
@@ -47,7 +47,7 @@ class GeneratorTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
-    public function testGenDiffInPlain3(): void
+    public function testGenDiffInPlain1(): void
     {
         $expected = "Property 'com' was added with value: [complex value]" . "\n" .
             "Property 'common.setting4' was updated. From 'val' to 'al'" . "\n" .
@@ -61,7 +61,7 @@ class GeneratorTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
-    public function testGenDiffInPlain4(): void
+    public function testGenDiffInPlain2(): void
     {
         $expected = "Property 'com' was removed" . "\n" .
             "Property 'common.setting4' was updated. From 'al' to 'val'" . "\n" .
