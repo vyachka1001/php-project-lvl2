@@ -4,8 +4,7 @@
     "type": "library",
     "require": {
         "docopt/docopt": "^1.0",
-        "symfony/yaml": "^5.4",
-        "phpstan/phpstan": "^1.5"
+        "symfony/yaml": "^5.4"
     },
     "bin": [
         "bin/gendiff"
@@ -40,13 +39,11 @@
     ],
     "require-dev": {
         "squizlabs/php_codesniffer": "^3.6",
-        "phpunit/phpunit": "^9.5",
-        "phpstan/phpstan-phpunit": "^1.1",
-        "phpstan/extension-installer": "^1.1"
+        "phpunit/phpunit": "^9.5"
     },
     "config": {
         "allow-plugins": {
-            "phpstan/extension-installer": true
+            
         }
     }
 }
