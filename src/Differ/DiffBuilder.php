@@ -67,7 +67,7 @@ function buildCurrNode(string $key, array $obj_vars, string $sign = ' '): array
     if (is_object($obj_vars[$key])) {
         DiffTree\setChildren($node, buildTreeRecursive(\get_object_vars($obj_vars[$key])));
     } else {
-        DiffTree\setNodeValue($node, getStringValueOfElement($obj_vars[$key]));
+        $node = DiffTree\setNodeValue($node, getStringValueOfElement($obj_vars[$key]));
     }
 
     return $node;
@@ -82,7 +82,7 @@ function buildTreeRecursive(array $obj_vars): array
         if (is_object($obj_vars[$key])) {
             DiffTree\setChildren($node, buildTreeRecursive(\get_object_vars($obj_vars[$key])));
         } else {
-            DiffTree\setNodeValue($node, getStringValueOfElement($obj_vars[$key]));
+            $node = DiffTree\setNodeValue($node, getStringValueOfElement($obj_vars[$key]));
         }
 
         $tree[] = $node;
