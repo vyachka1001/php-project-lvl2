@@ -16,7 +16,7 @@ function readDataFromFile(string $filePath): string
     if ($file > 0) {
         $data = \fread($file, \filesize($filePath));
     }
-   
+
     \fclose($file);
 
     return $data;
