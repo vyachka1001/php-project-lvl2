@@ -10,26 +10,22 @@ function formatInJson(array $tree): string
     $addedValues = buildChangedValues($tree, '+');
     $deletedValues = buildChangedValues($tree, '-');
 
-    //somehow find updates and filter this stupid values;
-    $outputString = json_encode($addedValues);//createJsonFormattedString($deletedValues, $addedValues);
-
-    return "{\n" . $outputString . "}";
+    return "abs";
 }
 
-function buildChangedValues(array $tree, string $sign = ''): array
+function buildChangedValues(array $tree, string $sign = ' '): array
 {
-    $formattedTree = \array_reduce($tree, function ($acc, $key) use ($sign) {
+    $defaultSign = ' ';
+    $formattedTree = \array_reduce($tree, function ($acc, $key) use ($sign, $defaultSign) {
         $children = DiffTree\getNodeChildren($key);
         $keySign = DiffTree\getSign($key);
         $name = DiffTree\getName($key);
         if (!\is_null($children) && $keySign === $sign) {
-            $acc[] = $key;
-        } elseif (!\is_null($children) && $keySign === ' ') {
-            $node = DiffTree\makeNode($name);
-            DiffTree\setChildren($node, buildChangedValues($children, $sign));
-            $acc[] = $node;
+            $acc[$name] = buildChangedValues($children, $defaultSign);
+        } elseif (!\is_null($children) && $keySign === $defaultSign) {
+            $acc[$name] = buildChangedValues($children, $sign);
         } elseif ($keySign === $sign) {
-            $acc[] = $key;
+            $acc[$name] = DiffTree\getValue($key);
         }
 
         return $acc;
@@ -69,11 +65,11 @@ function createCurrNode(array $tree, int $spacesCount = 0): string
 function createJsonFormattedString(array $deletedValues, array $addedValues): string
 {
     $spacesStep = 4;
-    $output = \str_repeat(' ', $spacesStep) . "deleted: {\n" . createCurrNode($deletedValues, $spacesStep) .
-        \str_repeat(' ', $spacesStep) . "}\n";
+    $output = \str_repeat(' ', $spacesStep) . "deleted: [\n" . createCurrNode($deletedValues, $spacesStep) .
+        \str_repeat(' ', $spacesStep) . "]\n";
 
-    $output .= \str_repeat(' ', $spacesStep) . "added: {\n" . createCurrNode($addedValues, $spacesStep) .
-        \str_repeat(' ', $spacesStep) . "}\n";
+    $output .= \str_repeat(' ', $spacesStep) . "added: [\n" . createCurrNode($addedValues, $spacesStep) .
+        \str_repeat(' ', $spacesStep) . "]\n";
 
     return $output;
 }
