@@ -26,6 +26,7 @@ function genDiff(string $path1, string $path2, string $format = 'stylish'): stri
 function getParsedObject(string $path): object
 {
     $extension = getFileExtension($path);
+    $object = [];
     if ($extension === '.yaml' || $extension === '.yml') {
         $object =  getYamlParsedObject($path);
     } elseif ($extension === '.json') {
@@ -38,7 +39,8 @@ function getParsedObject(string $path): object
 function getFileExtension(string $path): string
 {
     $extensionPointInd = \strrpos($path, ".");
-    if ($extensionPointInd) {
+    $extension = '';
+    if ($extensionPointInd > -1) {
         $extension = \substr($path, $extensionPointInd);
     }
 
