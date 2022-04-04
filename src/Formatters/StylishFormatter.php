@@ -6,7 +6,7 @@ use Differ\Structures\DiffTree;
 
 function formatInStylish(array $tree): string
 {
-    $outputString = "{\n" . buildTreeWithValuesAndBrackets($tree) . "}\n";
+    $outputString = "{\n" . buildTreeWithValuesAndBrackets($tree) . "}";
 
     return $outputString;
 }
