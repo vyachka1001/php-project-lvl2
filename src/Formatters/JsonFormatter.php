@@ -11,7 +11,7 @@ function formatInJson(array $tree): string
     $deletedValues = buildChangedValues($tree, '-');
 
     //somehow find updates and filter this stupid values;
-    $outputString = createJsonFormattedString($deletedValues, $addedValues);  
+    $outputString = createJsonFormattedString($deletedValues, $addedValues);
 
     return "{\n" . $outputString . "}";
 }
