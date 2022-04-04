@@ -2,9 +2,8 @@
 
 namespace Hexlet\Code\Parsers\JsonParser;
 
-function getJsonParsedObject($path): object
+function getJsonParsedObject(string $path): object
 {
-    //$path = __DIR__ . "/../../resources/" . $path;
     $json = readDataFromFile($path);
     $parsedJson = \json_decode($json);
 
@@ -17,7 +16,7 @@ function readDataFromFile(string $filePath): string
     $data = '';
 
     while (!feof($file)) {
-        $data .= fgets($file);
+        $data = $data . fgets($file);
     }
 
     return $data;
