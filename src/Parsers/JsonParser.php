@@ -13,8 +13,12 @@ function getJsonParsedObject(string $path): object
 function readDataFromFile(string $filePath): string
 {
     $file = fopen($filePath, 'r');
+    $data = '';
     if ($file > 0) {
-        $data = \fread($file, \filesize($filePath));
+        $size = \filesize($filePath);
+        if ($size > 0) {
+            $data = \fread($file, $size);
+        }
     }
 
     \fclose($file);
