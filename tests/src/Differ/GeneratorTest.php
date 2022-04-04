@@ -52,7 +52,7 @@ class GeneratorTest extends TestCase
         $expected = "Property 'com' was added with value: [complex value]" . "\n" .
             "Property 'common.setting4' was updated. From 'val' to 'al'" . "\n" .
             "Property 'follow' was added with value: false" . "\n" .
-            "Property 'z' was removed" . "\n";
+            "Property 'z' was removed";
 
         $actual = genDiff($this->jsonPath1, $this->jsonPath2, 'plain');
         $this->assertEquals($expected, $actual);
@@ -66,7 +66,7 @@ class GeneratorTest extends TestCase
         $expected = "Property 'com' was removed" . "\n" .
             "Property 'common.setting4' was updated. From 'al' to 'val'" . "\n" .
             "Property 'follow' was removed" . "\n" .
-            "Property 'z' was added with value: [complex value]" . "\n";
+            "Property 'z' was added with value: [complex value]";
 
         $actual = genDiff($this->jsonPath2, $this->jsonPath1, 'plain');
         $this->assertEquals($expected, $actual);
