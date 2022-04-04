@@ -2,7 +2,7 @@
 
 namespace Differ\Structures\DiffTree;
 
-function makeNode(string $name, $value = null, $children = null, $sign = null): array
+function makeNode(string $name, ?string $value = null, ?array $children = null, ?string $sign = null): array
 {
     return [
         "name" => $name,
@@ -12,7 +12,7 @@ function makeNode(string $name, $value = null, $children = null, $sign = null): 
     ];
 }
 
-function getName(array $tree): ?string
+function getName(array $tree): string
 {
     return $tree['name'];
 }
