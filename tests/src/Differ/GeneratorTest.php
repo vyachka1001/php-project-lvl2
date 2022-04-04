@@ -74,4 +74,36 @@ class GeneratorTest extends TestCase
         $actual = genDiff($this->yamlPath2, $this->yamlPath1, 'plain');
         $this->assertEquals($expected, $actual);
     }
+
+    public function testGenDiffInJson1(): void
+    {
+        $expected = [
+            "deleted" => [
+                "z" => [
+                    "key" => [
+                        "key" => [
+                            "key" => "null"
+                        ]
+                    ]
+                ]
+            ],
+            "added" => [
+                "com" => [
+                    "setting1" => "val"
+                ],
+                "follow" => "false"
+            ],
+            "updated" => [
+                "common" => [
+                    "setting4" => "al"
+                ]
+            ]
+        ];
+
+        $actual = genDiff($this->jsonPath1, $this->jsonPath2, 'json');
+        $this->assertEquals(json_encode($expected, JSON_PRETTY_PRINT), $actual);
+
+        $actual = genDiff($this->yamlPath1, $this->yamlPath2, 'json');
+        $this->assertEquals(json_encode($expected, JSON_PRETTY_PRINT), $actual);
+    }
 }
