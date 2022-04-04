@@ -11,7 +11,7 @@ function formatInJson(array $tree): string
     $deletedValues = buildChangedValues($tree, '-');
 
     //somehow find updates and filter this stupid values;
-    $outputString = createJsonFormattedString($deletedValues, $addedValues);    
+    $outputString = createJsonFormattedString($deletedValues, $addedValues);  
 
     return "{\n" . $outputString . "}";
 }
@@ -69,11 +69,11 @@ function createCurrNode(array $tree, int $spacesCount = 0): string
 function createJsonFormattedString(array $deletedValues, array $addedValues): string
 {
     $spacesStep = 4;
-    $output = \str_repeat(' ', $spacesStep) . "deleted: {\n" . createCurrNode($deletedValues, $spacesStep) . 
+    $output = \str_repeat(' ', $spacesStep) . "deleted: {\n" . createCurrNode($deletedValues, $spacesStep) .
         \str_repeat(' ', $spacesStep) . "}\n";
 
-    $output .= \str_repeat(' ', $spacesStep) . "added: {\n" . createCurrNode($addedValues, $spacesStep) . 
+    $output .= \str_repeat(' ', $spacesStep) . "added: {\n" . createCurrNode($addedValues, $spacesStep) .
         \str_repeat(' ', $spacesStep) . "}\n";
-    
+
     return $output;
 }
