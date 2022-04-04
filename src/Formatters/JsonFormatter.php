@@ -11,7 +11,7 @@ function formatInJson(array $tree): string
     $deletedValues = buildChangedValues($tree, '-');
 
     //somehow find updates and filter this stupid values;
-    $outputString = createJsonFormattedString($deletedValues, $addedValues);
+    $outputString = json_encode($addedValues);//createJsonFormattedString($deletedValues, $addedValues);
 
     return "{\n" . $outputString . "}";
 }
@@ -44,7 +44,7 @@ function createDifference(array $key): string
     $name = DiffTree\getName($key);
     $value = DiffTree\getValue($key);
 
-    return \str_repeat(" ", $spacesCount) . "{$name}: {$value}";
+    return \str_repeat(" ", $spacesCount) . "{$name}: {$value},";
 }
 
 function createCurrNode(array $tree, int $spacesCount = 0): string
