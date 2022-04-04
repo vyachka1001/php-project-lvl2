@@ -68,7 +68,7 @@ function formatDiffArray(array $diffArray): string
         $formattedDiff[] = makeDiffStr($key, $item);
     }
 
-    return implode($formattedDiff);
+    return implode("\n", $formattedDiff);
 }
 
 function makeDiffStr(string $name, array $item): string
@@ -90,7 +90,7 @@ function makeDiffStr(string $name, array $item): string
         }
     }
 
-    return "Property '{$name}' was {$diffVerdict}\n";
+    return "Property '{$name}' was {$diffVerdict}";
 }
 
 function getDiffValue(string $value): string
