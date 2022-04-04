@@ -17,9 +17,11 @@ function getName(array $tree): ?string
     return $tree['name'];
 }
 
-function setNodeValue(array &$tree, string $value): void
+function setNodeValue(array $tree, string $value): array
 {
     $tree['value'] = $value;
+
+    return $tree;
 }
 
 function getValue(array $tree, string $default = null): ?string
