@@ -4,24 +4,11 @@ namespace Hexlet\Code\Parsers\JsonParser;
 
 function getJsonParsedObject(string $path): object
 {
-    $json = readDataFromFile($path);
-    $parsedJson = \json_decode($json);
-
-    return $parsedJson;
-}
-
-function readDataFromFile(string $filePath): string
-{
-    $file = fopen($filePath, 'r');
-    $data = '';
-    if ($file > 0) {
-        $size = \filesize($filePath);
-        if ($size > 0) {
-            $data = \fread($file, $size);
-        }
+    $parsedJson = '';
+    $jsonString = \file_get_contents($path);
+    if ($jsonString !== false) {
+        $parsedJson = \json_decode($jsonString);
     }
 
-    \fclose($file);
-
-    return $data;
+    return $parsedJson;
 }
