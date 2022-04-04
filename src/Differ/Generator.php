@@ -28,22 +28,16 @@ function getParsedObject(string $path): object
     $extension = getFileExtension($path);
     if ($extension === '.yaml' || $extension === '.yml') {
         return getYamlParsedObject($path);
-    } elseif ($extension === '.json') {
-        return getJsonParsedObject($path);
     } else {
-        exit("unsupported file format");
+        return getJsonParsedObject($path);
     }
 }
 
 function getFileExtension(string $path): string
 {
     $extensionPointInd = \strrpos($path, ".");
-    $extension = '';
-    if ($extensionPointInd > -1) {
-        return \substr($path, $extensionPointInd);
-    } else {
-        exit("please try again with file paths");
-    }
+
+    return \substr($path, (int)$extensionPointInd);
 }
 
 function formatDiffStr(array $diffTree, string $format): string
