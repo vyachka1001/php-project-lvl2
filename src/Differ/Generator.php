@@ -26,14 +26,13 @@ function genDiff(string $path1, string $path2, string $format = 'stylish'): stri
 function getParsedObject(string $path): object
 {
     $extension = getFileExtension($path);
-    $object = (object)'';
     if ($extension === '.yaml' || $extension === '.yml') {
-        $object =  getYamlParsedObject($path);
+        return getYamlParsedObject($path);
     } elseif ($extension === '.json') {
-        $object = getJsonParsedObject($path);
+        return getJsonParsedObject($path);
+    } else {
+        exit("unsupported file format");
     }
-
-    return $object;
 }
 
 function getFileExtension(string $path): string
@@ -41,10 +40,10 @@ function getFileExtension(string $path): string
     $extensionPointInd = \strrpos($path, ".");
     $extension = '';
     if ($extensionPointInd > -1) {
-        $extension = \substr($path, $extensionPointInd);
+        return \substr($path, $extensionPointInd);
+    } else {
+        exit("please try again with file paths");
     }
-
-    return $extension;
 }
 
 function formatDiffStr(array $diffTree, string $format): string
