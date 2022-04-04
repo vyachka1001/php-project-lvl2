@@ -13,11 +13,11 @@ function getJsonParsedObject(string $path): object
 function readDataFromFile(string $filePath): string
 {
     $file = fopen($filePath, 'r');
-    $data = '';
-
-    while (!feof($file)) {
-        $data = $data . fgets($file);
+    if ($file > 0) {
+        $data = \fread($file, \filesize($filePath));
     }
+   
+    \fclose($file);
 
     return $data;
 }
