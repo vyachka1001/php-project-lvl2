@@ -9,19 +9,15 @@ function formatInJson(array $tree): string
 {
     $deletedValues = buildChangedValues($tree, '-');
     $addedValues = buildChangedValues($tree, '+');
-    \print_r($addedValues);
 
     $updatedValues = findIntersectionsOfArrays($addedValues, $deletedValues);
     $deletedValues = findDifferencesOfArrays($deletedValues, $updatedValues);
     $addedValues = findDifferencesOfArrays($addedValues, $updatedValues);
 
-    print_r($updatedValues);
-    \print_r($addedValues);
-
     return createJsonFormattedString($deletedValues, $addedValues, $updatedValues);
 }
 
-function buildChangedValues(array $tree, string $sign = ' '): array
+function buildChangedValues(array $tree, string $sign = ''): array
 {
     $defaultSign = ' ';
     $formattedTree = \array_reduce($tree, function ($acc, $key) use ($sign, $defaultSign) {
@@ -31,7 +27,10 @@ function buildChangedValues(array $tree, string $sign = ' '): array
         if (!\is_null($children) && $keySign === $sign) {
             $acc[$name] = buildChangedValues($children, $defaultSign);
         } elseif (!\is_null($children) && $keySign === $defaultSign) {
-            $acc[$name] = buildChangedValues($children, $sign);
+            $possibleChange = buildChangedValues($children, $sign);
+            if (!empty($possibleChange)) {
+                $acc[$name] = $possibleChange;
+            }
         } elseif ($keySign === $sign) {
             $acc[$name] = DiffTree\getValue($key);
         }
@@ -85,35 +84,15 @@ function findDifferencesOfArrays(array $array1, array $array2): array
     return $differences;
 }
 
-function createDifference(array $key): string
-{
-    $spacesCount = 4;
-    $name = DiffTree\getName($key);
-    $value = DiffTree\getValue($key);
-
-    return \str_repeat(" ", $spacesCount) . "{$name}: {$value},";
-}
-
-function createCurrNode(array $tree, int $spacesCount = 0): string
-{
-    $formattedTree = \array_reduce($tree, function ($acc, $key) use ($spacesCount) {
-        $children = DiffTree\getNodeChildren($key);
-        $spacesStep = 4;
-        if (!\is_null($children)) {
-            $sign = DiffTree\getSign($key);
-            $name = DiffTree\getName($key);
-            $acc .= \str_repeat(' ', $spacesCount) . "    {$name}: {\n";
-            $acc .= createCurrNode($children, $spacesCount + $spacesStep);
-            return $acc . \str_repeat(" ", $spacesCount + $spacesStep) . "}\n";
-        } else {
-            return $acc . \str_repeat(" ", $spacesCount) . createDifference($key) . "\n";
-        }
-    }, '');
-
-    return $formattedTree;
-}
-
 function createJsonFormattedString(array $deletedValues, array $addedValues, array $updatedValues): string
 {
-    return "";
+    $resultingArray = [
+        "deleted" => $deletedValues,
+        "added" => $addedValues,
+        "updated" => $updatedValues
+    ];
+
+    $jsonFormattedString = json_encode($resultingArray, JSON_PRETTY_PRINT);
+
+    return $jsonFormattedString;
 }
