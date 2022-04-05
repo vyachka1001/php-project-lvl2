@@ -100,7 +100,7 @@ function getDiffValue(string $value): string
     return (\in_array($value, $keywords, true) || \is_numeric($value)) ? $value : "'{$value}'";
 }
 
-function addValueToArray(array $arr, string $value): array
+function addValueToArray(array $arr, array $value): array
 {
     return [...$arr, $value];
 }
