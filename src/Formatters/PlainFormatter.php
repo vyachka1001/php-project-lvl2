@@ -6,7 +6,6 @@ use Differ\Structures\DiffTree;
 
 function formatInPlain(array $tree): string
 {
-    //$diffArray = ;
     $diffArray = rebuildDiffArrayAccordingToUpdates(buildDiffArray($tree));
     $plainOutput = formatDiffArray($diffArray);
 
@@ -23,15 +22,11 @@ function buildDiffArray(array $tree, string $namespace = null): array
         if (!\is_null($children) && $sign === ' ') {
             $diff = !\is_null($namespace) ? buildDiffArray($children, "{$namespace}.{$name}") :
                 buildDiffArray($children, $name);
-            //$acc = ;
             return [...$acc, ...$diff];
         } elseif ($sign !== ' ') {
             $value = !\is_null($children) ? '[complex value]' :  DiffTree\getValue($key);
             $currName = !\is_null($namespace) ? "{$namespace}.{$name}" : $name;
             $node = DiffTree\makeNode($currName, $value, null, $sign);
-            // $node = DiffTree\setSign($node, $sign);
-            // $node = DiffTree\setNodeValue($node, $value);
-            //$acc[] = $node;
             return addValueToArray($acc, $node);
         } else {
             return $acc;
