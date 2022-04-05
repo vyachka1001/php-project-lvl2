@@ -3,7 +3,6 @@
 namespace Differ\DiffBuilder;
 
 use Differ\Structures\DiffTree;
-use function Functional\sort;
 
 function buildDiffTree(array $obj_vars1, array $obj_vars2): array
 {
