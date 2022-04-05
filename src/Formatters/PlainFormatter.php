@@ -22,7 +22,7 @@ function buildDiffArray(array $tree, string $namespace = null): array
         if (!\is_null($children) && $sign === ' ') {
             $diff = !\is_null($namespace) ? buildDiffArray($children, "{$namespace}.{$name}") :
                 buildDiffArray($children, $name);
-            return [...$acc, ...$diff];
+            return array_merge($acc, $diff);
         } elseif ($sign !== ' ') {
             $value = !\is_null($children) ? '[complex value]' :  DiffTree\getValue($key);
             $currName = !\is_null($namespace) ? "{$namespace}.{$name}" : $name;
@@ -38,54 +38,47 @@ function buildDiffArray(array $tree, string $namespace = null): array
 
 function rebuildDiffArrayAccordingToUpdates(array $diffArray): array
 {
-    $diff = [];
-    foreach ($diffArray as $item) {
+    $nameToValueSignMap = array_map(function ($item) {
         $name = DiffTree\getName($item);
         $value = DiffTree\getValue($item);
         $sign = DiffTree\getSign($item);
 
-        $diff[$name]['sign'] = $sign;
-        if (\array_key_exists('value', $diff[$name])) {
-            $prevValue = $diff[$name]['value'];
-            $diff[$name]['value'] = [$prevValue, $value];
-        } else {
-            $diff[$name]['value'] = $value;
-        }
-    }
+        return [
+            $name => [
+                "value" => $value,
+                "sign" => $sign
+            ]
+        ];
+    }, $diffArray);
 
-    return $diff;
+    $nameToValueChanges = array_merge_recursive(...$nameToValueSignMap);
+
+    return $nameToValueChanges;
 }
 
 function formatDiffArray(array $diffArray): string
 {
-    $formattedDiff = [];
-    foreach ($diffArray as $key => $item) {
-        $formattedDiff[] = makeDiffStr($key, $item);
-    }
+    $keys = array_keys($diffArray);
+    $formattedDiff = array_map(fn ($key) => makeDiffStr($key, $diffArray[$key]), $keys);
 
     return implode("\n", $formattedDiff);
 }
 
 function makeDiffStr(string $name, array $item): string
 {
-    $diffVerdict = '';
     if (\is_array($item['value'])) {
         $value1 = getDiffValue($item['value'][0]);
         $value2 = getDiffValue($item['value'][1]);
-        $diffVerdict = "updated. From {$value1} to {$value2}";
+        return "Property '{$name}' was updated. From {$value1} to {$value2}";
     } else {
         switch ($item['sign']) {
             case '+':
                 $value = getDiffValue($item['value']);
-                $diffVerdict = "added with value: {$value}";
-                break;
-            case '-':
-                $diffVerdict = "removed";
-                break;
+                return "Property '{$name}' was added with value: {$value}";
+            default:
+                return "Property '{$name}' was removed";
         }
     }
-
-    return "Property '{$name}' was {$diffVerdict}";
 }
 
 function getDiffValue(string $value): string
