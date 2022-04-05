@@ -3,6 +3,7 @@
 namespace Differ\DiffBuilder;
 
 use Differ\Structures\DiffTree;
+use function Functional\sort;
 
 function buildDiffTree(array $obj_vars1, array $obj_vars2): array
 {
@@ -94,7 +95,7 @@ function buildTreeRecursive(array $obj_vars): array
 function getSortedArrayKeys(array $arr): array
 {
     $keys = array_keys($arr);
-    sort($keys);
+    \usort($keys, 'strcmp');
 
     return $keys;
 }
