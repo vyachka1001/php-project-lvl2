@@ -94,7 +94,7 @@ function buildTreeRecursive(array $obj_vars): array
 function getSortedArrayKeys(array $arr): array
 {
     $keys = array_keys($arr);
-    \usort($keys, 'strcmp');
+    sort($keys);
 
     return $keys;
 }
@@ -112,7 +112,7 @@ function getRestOfData(array $obj_vars, array $keys, int $startIndex, string $si
     return $tree;
 }
 
-function getStringValueOfElement($element): string
+function getStringValueOfElement(mixed $element): string
 {
     if (\is_bool($element)) {
         return var_export($element, true);
