@@ -4,7 +4,8 @@
     "type": "library",
     "require": {
         "docopt/docopt": "^1.0",
-        "symfony/yaml": "^5.4"
+        "symfony/yaml": "^5.4",
+        "lstrojny/functional-php": "^1.17"
     },
     "bin": [
         "bin/gendiff"
