@@ -6,8 +6,8 @@ use Differ\Structures\DiffTree;
 
 function formatInPlain(array $tree): string
 {
-    $diffArray = buildDiffArray($tree);
-    $diffArray = rebuildDiffArrayAccordingToUpdates($diffArray);
+    //$diffArray = ;
+    $diffArray = rebuildDiffArrayAccordingToUpdates(buildDiffArray($tree));
     $plainOutput = formatDiffArray($diffArray);
 
     return $plainOutput;
@@ -23,16 +23,16 @@ function buildDiffArray(array $tree, string $namespace = null): array
         if (!\is_null($children) && $sign === ' ') {
             $diff = !\is_null($namespace) ? buildDiffArray($children, "{$namespace}.{$name}") :
                 buildDiffArray($children, $name);
-            $acc = [...$acc, ...$diff];
-            return $acc;
+            //$acc = ;
+            return [...$acc, ...$diff];
         } elseif ($sign !== ' ') {
             $value = !\is_null($children) ? '[complex value]' :  DiffTree\getValue($key);
             $currName = !\is_null($namespace) ? "{$namespace}.{$name}" : $name;
-            $node = DiffTree\makeNode($currName);
-            $node = DiffTree\setSign($node, $sign);
-            $node = DiffTree\setNodeValue($node, $value);
-            $acc[] = $node;
-            return $acc;
+            $node = DiffTree\makeNode($currName, $value, null, $sign);
+            // $node = DiffTree\setSign($node, $sign);
+            // $node = DiffTree\setNodeValue($node, $value);
+            //$acc[] = $node;
+            return addValueToArray($acc, $node);
         } else {
             return $acc;
         }
@@ -98,4 +98,9 @@ function getDiffValue(string $value): string
     $keywords = ['true', 'false', 'null', '[complex value]'];
 
     return (\in_array($value, $keywords, true) || \is_numeric($value)) ? $value : "'{$value}'";
+}
+
+function addValueToArray(array $arr, string $value): array
+{
+    return [...$arr, $value];
 }
