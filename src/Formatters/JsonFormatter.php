@@ -5,16 +5,18 @@ namespace Formatters\JsonFormatter;
 use Differ\Structures\DiffTree;
 use Formatters\PlainFormatter;
 
+use function Functional\flatten;
+
 function formatInJson(array $tree): string
 {
     $deletedValues = buildChangedValues($tree, '-');
     $addedValues = buildChangedValues($tree, '+');
 
     $updatedValues = findIntersectionsOfArrays($addedValues, $deletedValues);
-    $deletedValues = findDifferencesOfArrays($deletedValues, $updatedValues);
-    $addedValues = findDifferencesOfArrays($addedValues, $updatedValues);
+    $deleted = findDifferencesOfArrays($deletedValues, $updatedValues);
+    $added = findDifferencesOfArrays($addedValues, $updatedValues);
 
-    return createJsonFormattedString($deletedValues, $addedValues, $updatedValues);
+    return createJsonFormattedString($deleted, $added, $updatedValues);
 }
 
 function buildChangedValues(array $tree, string $sign = ''): array
@@ -25,14 +27,14 @@ function buildChangedValues(array $tree, string $sign = ''): array
         $keySign = DiffTree\getSign($key);
         $name = DiffTree\getName($key);
         if (!\is_null($children) && $keySign === $sign) {
-            $acc[$name] = buildChangedValues($children, $defaultSign);
+            return addValueToArray($acc, [$name => buildChangedValues($children, $defaultSign)]);
         } elseif (!\is_null($children) && $keySign === $defaultSign) {
             $possibleChange = buildChangedValues($children, $sign);
-            if (!empty($possibleChange)) {
-                $acc[$name] = $possibleChange;
+            if ((bool)($possibleChange)) {
+                return addValueToArray($acc, [$name => $possibleChange]);
             }
         } elseif ($keySign === $sign) {
-            $acc[$name] = DiffTree\getValue($key);
+            return addValueToArray($acc, [$name => DiffTree\getValue($key)]);
         }
 
         return $acc;
@@ -41,7 +43,7 @@ function buildChangedValues(array $tree, string $sign = ''): array
     return $formattedTree;
 }
 
-function findIntersectionsOfArrays(array $array1, $array2): array
+function findIntersectionsOfArrays(array $array1, array $array2): array
 {
     $keys1 = \array_keys($array1);
     $keys2 = \array_keys($array2);
@@ -95,4 +97,9 @@ function createJsonFormattedString(array $deletedValues, array $addedValues, arr
     $jsonFormattedString = json_encode($resultingArray, JSON_PRETTY_PRINT);
 
     return $jsonFormattedString;
+}
+
+function addValueToArray(array $arr, array $value): array
+{
+    return [...$arr, ...$value];
 }
