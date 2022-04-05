@@ -51,11 +51,9 @@ function findIntersectionsOfArrays(array $array1, array $array2): array
 
     $intersections = \array_reduce($commonKeys, function ($acc, $item) use ($array1, $array2) {
         if (\is_array($array1[$item]) && \is_array($array2[$item])) {
-            $acc[$item] = findIntersectionsOfArrays($array1[$item], $array2[$item]);
-            return $acc;
+            return array_merge($acc, [$item => findIntersectionsOfArrays($array1[$item], $array2[$item])]);
         } else {
-            $acc[$item] = $array1[$item];
-            return $acc;
+            return array_merge($acc, [$item => $array1[$item]]);
         }
     }, []);
 
@@ -72,12 +70,12 @@ function findDifferencesOfArrays(array $array1, array $array2): array
         if (\in_array($item, $commonKeys, true)) {
             if (is_array($array1[$item]) && is_array($array2[$item])) {
                 $possibleDiff = findDifferencesOfArrays($array1[$item], $array2[$item]);
-                if (!empty($possibleDiff)) {
-                    $acc[$item] = $possibleDiff;
+                if ((bool)($possibleDiff)) {
+                    return array_merge($acc, [$item => $possibleDiff]);
                 }
             }
         } else {
-            $acc[$item] = $array1[$item];
+            return array_merge($acc, [$item => $array1[$item]]);
         }
 
         return $acc;
