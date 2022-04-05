@@ -27,14 +27,14 @@ function buildChangedValues(array $tree, string $sign = ''): array
         $keySign = DiffTree\getSign($key);
         $name = DiffTree\getName($key);
         if (!\is_null($children) && $keySign === $sign) {
-            return addValueToArray($acc, [$name => buildChangedValues($children, $defaultSign)]);
+            return array_merge($acc, [$name => buildChangedValues($children, $defaultSign)]);
         } elseif (!\is_null($children) && $keySign === $defaultSign) {
             $possibleChange = buildChangedValues($children, $sign);
             if ((bool)($possibleChange)) {
-                return addValueToArray($acc, [$name => $possibleChange]);
+                return array_merge($acc, [$name => $possibleChange]);
             }
         } elseif ($keySign === $sign) {
-            return addValueToArray($acc, [$name => DiffTree\getValue($key)]);
+            return array_merge($acc, [$name => DiffTree\getValue($key)]);
         }
 
         return $acc;
@@ -97,9 +97,4 @@ function createJsonFormattedString(array $deletedValues, array $addedValues, arr
     $jsonFormattedString = json_encode($resultingArray, JSON_PRETTY_PRINT);
 
     return $jsonFormattedString;
-}
-
-function addValueToArray(array $arr, array $value): array
-{
-    return [...$arr, ...$value];
 }
