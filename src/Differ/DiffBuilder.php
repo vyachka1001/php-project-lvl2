@@ -4,89 +4,77 @@ namespace Differ\DiffBuilder;
 
 use Differ\Structures\DiffTree;
 
-function buildDiffTree(array $obj_vars1, array $obj_vars2): array
+function buildDiffTree(array $objVars1, array $objVars2): array
 {
-    $keys1 = getSortedArrayKeys($obj_vars1);
-    $keys2 = getSortedArrayKeys($obj_vars2);
-
-    $keysCount1 = \count($keys1);
-    $keysCount2 = \count($keys2);
-
-    $index1 = 0;
-    $index2 = 0;
-    $diffTree = [];
     $signs = ['first' => '-', 'second' => '+'];
+    $treeWithCommonKeys = buildTreeWithCommonKeys($objVars1, $objVars2, $signs);
+    //print_r($treeWithCommonKeys);
 
-    while ($index1 < $keysCount1 && $index2 < $keysCount2) {
-        $key1 = $keys1[$index1];
-        $key2 = $keys2[$index2];
-        $node = [];
-        $comparisonResult = \strcmp($key1, $key2);
-        if ($comparisonResult === 0) {
-            if (is_object($obj_vars1[$key1]) && is_object($obj_vars2[$key2])) {
-                $node = DiffTree\makeNode($key1);
-                $node = DiffTree\setChildren(
-                    $node,
-                    buildDiffTree(\get_object_vars($obj_vars1[$key1]), \get_object_vars($obj_vars2[$key1]))
-                );
-            } else {
-                if ($obj_vars1[$key1] === $obj_vars2[$key2]) {
-                    $node = buildCurrNode($key1, $obj_vars1);
+    return $treeWithCommonKeys;
+}
+
+function buildTreeWithCommonKeys(array $objVars1, array $objVars2, array $signs): array
+{
+    $keys1 = array_keys($objVars1);
+    $keys2 = array_keys($objVars2);
+    $commonKeys = sortArray(array_intersect($keys1, $keys2));
+    $keys = sortArray(array_unique(array_merge($keys1, $keys2, $commonKeys)));
+
+    $tree = array_reduce($keys, 
+        function ($acc, $key) use ($keys1, $keys2, $commonKeys, $objVars1, $objVars2, $signs){
+            if (in_array($key, $commonKeys, true)) {
+                if (is_object($objVars1[$key]) && is_object($objVars2[$key])) {
+                    return [...$acc, DiffTree\setChildren(
+                        DiffTree\makeNode($key),
+                        buildTreeWithCommonKeys(\get_object_vars($objVars1[$key]), \get_object_vars($objVars2[$key]), $signs)
+                    )];
                 } else {
-                    $node = buildCurrNode($key1, $obj_vars1, $signs['first']);
-                    $diffTree[] = $node;
-                    $node = buildCurrNode($key2, $obj_vars2, $signs['second']);
+                    if ($objVars1[$key] === $objVars2[$key]) {
+                        return [...$acc, buildCurrNode($key, $objVars1)];
+                    } else {
+                        return [...$acc, buildCurrNode($key, $objVars1, $signs['first']), 
+                            buildCurrNode($key, $objVars2, $signs['second'])];
+                    }
                 }
+            } else {
+                return (in_array($key, $keys1, true)) ?
+                    [...$acc, buildCurrNode($key, $objVars1, $signs['first'])] :
+                    [...$acc, buildCurrNode($key, $objVars2, $signs['second'])];
             }
-            $index1++;
-            $index2++;
-        } elseif ($comparisonResult > 0) {
-            $node = buildCurrNode($key2, $obj_vars2, $signs['second']);
-            $index2++;
-        } else {
-            $node = buildCurrNode($key1, $obj_vars1, $signs['first']);
-            $index1++;
-        }
+    }, []);
 
-        $diffTree[] = $node;
-    }
-
-    if ($index1 < $keysCount1) {
-        $diffTree = [...$diffTree, ...getRestOfData($obj_vars1, $keys1, $index1, $signs['first'])];
-    } else {
-        $diffTree = [...$diffTree, ...getRestOfData($obj_vars2, $keys2, $index2, $signs['second'])];
-    }
-
-    return $diffTree;
+    return $tree;
 }
 
-function buildCurrNode(string $key, array $obj_vars, string $sign = ' '): array
+function sortArray(array $arr): array
 {
-    $node = DiffTree\makeNode($key);
-    $node = DiffTree\setSign($node, $sign);
-    if (is_object($obj_vars[$key])) {
-        $node = DiffTree\setChildren($node, buildTreeRecursive(\get_object_vars($obj_vars[$key])));
-    } else {
-        $node = DiffTree\setNodeValue($node, getStringValueOfElement($obj_vars[$key]));
-    }
+    $sorted = $arr;
+    \sort($sorted);
 
-    return $node;
+    return $sorted;
 }
 
-function buildTreeRecursive(array $obj_vars): array
+function buildCurrNode(string $key, array $objVars, string $sign = ' '): array
 {
-    $tree = [];
-    $keys = $keys = getSortedArrayKeys($obj_vars);
-    foreach ($keys as $key) {
+    $node = DiffTree\makeNode($key, null, null, $sign);
+    if (is_object($objVars[$key])) {
+        return DiffTree\setChildren($node, buildTreeRecursive(\get_object_vars($objVars[$key])));
+    } else {
+        return DiffTree\setNodeValue($node, getStringValueOfElement($objVars[$key]));
+    }
+}
+
+function buildTreeRecursive(array $objVars): array
+{
+    $keys = getSortedArrayKeys($objVars);
+    $tree = array_map(function ($key) use ($objVars) {
         $node = DiffTree\makeNode($key);
-        if (is_object($obj_vars[$key])) {
-            $node = DiffTree\setChildren($node, buildTreeRecursive(\get_object_vars($obj_vars[$key])));
+        if (is_object($objVars[$key])) {
+            return DiffTree\setChildren($node, buildTreeRecursive(\get_object_vars($objVars[$key])));
         } else {
-            $node = DiffTree\setNodeValue($node, getStringValueOfElement($obj_vars[$key]));
+            return DiffTree\setNodeValue($node, getStringValueOfElement($objVars[$key]));
         }
-
-        $tree[] = $node;
-    }
+    }, $keys);
 
     return $tree;
 }
@@ -97,19 +85,6 @@ function getSortedArrayKeys(array $arr): array
     sort($keys);
 
     return $keys;
-}
-
-function getRestOfData(array $obj_vars, array $keys, int $startIndex, string $sign): array
-{
-    $length = count($obj_vars);
-    $tree = [];
-    for ($ind = $startIndex; $ind < $length; $ind++) {
-        $key = $keys[$ind];
-        $node = buildCurrNode($key, $obj_vars, $sign);
-        $tree[] = $node;
-    }
-
-    return $tree;
 }
 
 function getStringValueOfElement(mixed $element): string
