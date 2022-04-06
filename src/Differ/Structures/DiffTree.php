@@ -53,15 +53,6 @@ function getNodeChildren(array $tree, string $default = null): ?array
     return $default;
 }
 
-function setSign(array $tree, string $sign = null): array
-{
-    $name = getName($tree);
-    $children = getNodeChildren($tree);
-    $value = getValue($tree);
-
-    return makeNode($name, $value, $children, $sign);
-}
-
 function getSign(array $tree, string $default = ' '): string
 {
     if (isset($tree['sign'])) {
