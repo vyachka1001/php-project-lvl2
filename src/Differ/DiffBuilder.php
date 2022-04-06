@@ -20,19 +20,25 @@ function buildTreeWithCommonKeys(array $objVars1, array $objVars2, array $signs)
     $commonKeys = sortArray(array_intersect($keys1, $keys2));
     $keys = sortArray(array_unique(array_merge($keys1, $keys2, $commonKeys)));
 
-    $tree = array_reduce($keys, 
-        function ($acc, $key) use ($keys1, $keys2, $commonKeys, $objVars1, $objVars2, $signs){
+    $tree = array_reduce(
+        $keys,
+        function ($acc, $key) use ($keys1, $keys2, $commonKeys, $objVars1, $objVars2, $signs) {
             if (in_array($key, $commonKeys, true)) {
                 if (is_object($objVars1[$key]) && is_object($objVars2[$key])) {
-                    return [...$acc, DiffTree\setChildren(
+                    $node = DiffTree\setChildren(
                         DiffTree\makeNode($key),
-                        buildTreeWithCommonKeys(\get_object_vars($objVars1[$key]), \get_object_vars($objVars2[$key]), $signs)
-                    )];
+                        buildTreeWithCommonKeys(
+                            \get_object_vars($objVars1[$key]),
+                            \get_object_vars($objVars2[$key]),
+                            $signs
+                        )
+                    );
+                    return [...$acc, $node];
                 } else {
                     if ($objVars1[$key] === $objVars2[$key]) {
                         return [...$acc, buildCurrNode($key, $objVars1)];
                     } else {
-                        return [...$acc, buildCurrNode($key, $objVars1, $signs['first']), 
+                        return [...$acc, buildCurrNode($key, $objVars1, $signs['first']),
                             buildCurrNode($key, $objVars2, $signs['second'])];
                     }
                 }
@@ -41,7 +47,9 @@ function buildTreeWithCommonKeys(array $objVars1, array $objVars2, array $signs)
                     [...$acc, buildCurrNode($key, $objVars1, $signs['first'])] :
                     [...$acc, buildCurrNode($key, $objVars2, $signs['second'])];
             }
-    }, []);
+        },
+        []
+    );
 
     return $tree;
 }
