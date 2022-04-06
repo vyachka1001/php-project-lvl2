@@ -4,11 +4,12 @@ namespace Differ\DiffBuilder;
 
 use Differ\Structures\DiffTree;
 
+use function Functional\sort;
+
 function buildDiffTree(array $objVars1, array $objVars2): array
 {
     $signs = ['first' => '-', 'second' => '+'];
     $treeWithCommonKeys = buildTreeWithCommonKeys($objVars1, $objVars2, $signs);
-    //print_r($treeWithCommonKeys);
 
     return $treeWithCommonKeys;
 }
@@ -17,12 +18,12 @@ function buildTreeWithCommonKeys(array $objVars1, array $objVars2, array $signs)
 {
     $keys1 = array_keys($objVars1);
     $keys2 = array_keys($objVars2);
-    $commonKeys = sortArray(array_intersect($keys1, $keys2));
-    $keys = sortArray(array_unique(array_merge($keys1, $keys2, $commonKeys)));
+    $commonKeys = sort(array_intersect($keys1, $keys2), fn ($left, $right) => strcmp($left, $right));
+    $keys = sort(array_unique(array_merge($keys1, $keys2, $commonKeys)), fn ($left, $right) => strcmp($left, $right));
 
     $tree = array_reduce(
         $keys,
-        function ($acc, $key) use ($keys1, $keys2, $commonKeys, $objVars1, $objVars2, $signs) {
+        function ($acc, $key) use ($keys1, $commonKeys, $objVars1, $objVars2, $signs) {
             if (in_array($key, $commonKeys, true)) {
                 if (is_object($objVars1[$key]) && is_object($objVars2[$key])) {
                     $node = DiffTree\setChildren(
@@ -54,14 +55,6 @@ function buildTreeWithCommonKeys(array $objVars1, array $objVars2, array $signs)
     return $tree;
 }
 
-function sortArray(array $arr): array
-{
-    $sorted = $arr;
-    \sort($sorted);
-
-    return $sorted;
-}
-
 function buildCurrNode(string $key, array $objVars, string $sign = ' '): array
 {
     $node = DiffTree\makeNode($key, null, null, $sign);
@@ -74,7 +67,7 @@ function buildCurrNode(string $key, array $objVars, string $sign = ' '): array
 
 function buildTreeRecursive(array $objVars): array
 {
-    $keys = getSortedArrayKeys($objVars);
+    $keys = sort(array_keys($objVars), fn ($left, $right) => strcmp($left, $right));
     $tree = array_map(function ($key) use ($objVars) {
         $node = DiffTree\makeNode($key);
         if (is_object($objVars[$key])) {
@@ -85,14 +78,6 @@ function buildTreeRecursive(array $objVars): array
     }, $keys);
 
     return $tree;
-}
-
-function getSortedArrayKeys(array $arr): array
-{
-    $keys = array_keys($arr);
-    sort($keys);
-
-    return $keys;
 }
 
 function getStringValueOfElement(mixed $element): string
